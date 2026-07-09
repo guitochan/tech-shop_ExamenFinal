@@ -1,51 +1,59 @@
 public class tech_shop
 {
+    public static int capacidadMaxima = 0;
+
+    public static string[] codigoArreglo = new string [20];
+    public static string[] productosArreglo = new string [20];
+    public static double[] preciosArreglo = new double [20];
+    public static int[] stockArreglo = new int[20];
+
     public static void Main(String [] args)
     {
         int opcion;
-
-        MostrarMenu();
-        opcion=LeerOpcion();
-
-        switch(opcion)
+        while(true)
         {
-            case 1:
-                RegistrarProducto();
-                break;
-            case 2:
-                MostrarCatalogo();
-                break;
-            case 3:
-                BuscarProductoxCodigo();
-                break;
-            case 4:
-                ActualizarStock();
-                break;
-            case 5:
-                OrdenarCatalogoxPrecio();
-                break;
-            case 6:
-                InsertarProductoxPosicionEspecifica();
-                break;
-            case 7:
-                EliminarProductoxCodigo();
-                break;
-            case 8:
-                OrdenarCatalogoAlfabeticamente();
-                break;
-            case 9:
-                ValorVsReferencia();
-                break;
-            case 0:
-                Console.WriteLine("Saliendo del programa... ");
-                break;
-        }
+            MostrarMenu();
+            opcion=LeerOpcion();
 
+            switch(opcion)
+            {
+                case 1:
+                    RegistrarProducto();
+                    break;
+                case 2:
+                    MostrarCatalogo();
+                    break;
+                case 3:
+                    //BuscarProductoxCodigo();
+                    break;
+                case 4:
+                    //ActualizarStock();
+                    break;
+                case 5:
+                    //OrdenarCatalogoxPrecio();
+                    break;
+                case 6:
+                    //InsertarProductoxPosicionEspecifica();
+                    break;
+                case 7:
+                    //EliminarProductoxCodigo();
+                    break;
+                case 8:
+                    //OrdenarCatalogoAlfabeticamente();
+                    break;
+                case 9:
+                    //ValorVsReferencia();
+                    break;
+                case 0:
+                    Console.WriteLine("Saliendo del programa... ");
+                    return;
+            }
+        }
     }
 
     public static void MostrarMenu()
     {
-        Console.WriteLine("=============================================================");
+        Console.WriteLine("\n=============================================================");
         Console.WriteLine("======================== TECH - SHOP ========================");
         Console.WriteLine("=================== SISTEMA DE CATALOGOS ====================");
         Console.WriteLine("=============================================================");
@@ -88,15 +96,103 @@ public class tech_shop
         return opcion;
     }
 
+    public static bool ProductoEsValido(string _codigo, string _nombre, double _precio , int _stock)
+    {
+        if (_codigo == "")
+        {
+            Console.WriteLine("Codigo vacio. Ingresar un codigo.");
+            return false;
+        }
+        for(int i = 0; i < 20; i++)
+        {
+            if (codigoArreglo[i] == _codigo)
+            {
+                Console.WriteLine("Codigo repetido. Ingresar un codigo unico.");
+                return false;
+            }
+        }
+
+        if(_nombre == "")
+        {
+            Console.WriteLine("Nombre de producto vacio. Ingresar un nombre para el producto.");
+            return false;
+        }
+        for(int i = 0; i < 20; i++)
+        {
+            if (productosArreglo[i] == _nombre)
+            {
+                Console.WriteLine("Producto duplicado. Ingresar un producto distinto.");
+                return false;
+            }
+        }
+
+        if(_precio <= 0)
+        {
+            Console.WriteLine("Debe ingresar un valor para el precio mayor de 0.");
+            return false;
+        }
+
+        if(_stock < 0)
+        {
+            Console.WriteLine("Debe ingresar un valor para el stock mayor o igual de 0.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void RegistrarProducto()
+    {
+        string codigo = "", nombre = "";
+        double precio = 0.00;
+        int stock = 0;
+
+        if(capacidadMaxima >= 20)
+        {
+            Console.WriteLine("No se pueden registrar mas productos. Capacidad maxima alcanzada.");
+        }
+
+        do
+        {
+            Console.WriteLine("Ingrese el codigo del producto: ");
+            codigo = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el nombre del producto: ");
+            nombre = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el precio del producto: ");
+            precio = double.Parse(Console.ReadLine());
+            
+            Console.WriteLine("Ingrese el stock del producto: ");
+            stock = int.Parse(Console.ReadLine());
+            
+        } while(ProductoEsValido(codigo, nombre, precio, stock) == false);
+
+
+        codigoArreglo[capacidadMaxima] = codigo;
+        productosArreglo[capacidadMaxima] = nombre;
+        preciosArreglo[capacidadMaxima] = precio;
+        stockArreglo[capacidadMaxima] = stock;
+
+        capacidadMaxima++;
+    }
+    
     public static void MostrarCatalogo()
     {
-        Console.WriteLine("\nCatalogo de Productos");
-        Console.WriteLine("----------------------------------------------");
-        Console.WriteLine("|   Producto        |  Precio      |  Stock  |");
-        Console.WriteLine("----------------------------------------------");
+        Console.WriteLine("\n                   CATALOGO DE PRODUCTOS                  ");
+        Console.WriteLine("-----------------------------------------------------------");
+        Console.WriteLine("|   Codigo   |   Producto        |  Precio      |  Stock  |");
+        Console.WriteLine("-----------------------------------------------------------");
         
-        for(int i=0; i < productos.Length; i++){
-            Console.WriteLine($"| {productos[i], -17} | S/ {precios[i], -8}  | {stock[i], -8}|");
+        if(capacidadMaxima == 0)
+        {
+            Console.WriteLine("|-------------- NO HAY PRODUCTOS REGISTRADOS -------------|");
+        }
+        else
+        {
+            for(int i=0; i < capacidadMaxima; i++){
+                Console.WriteLine($"| {codigoArreglo[i], -10} | {productosArreglo[i], -17} | S/ {preciosArreglo[i], -8}  | {stockArreglo[i], -8}|");
+            }
         }
     }
 }
