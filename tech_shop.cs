@@ -13,7 +13,7 @@ public class tech_shop
         while(true)
         {
             MostrarMenu();
-            opcion=LeerOpcion();
+            opcion=LeerOpcionMenu();
 
             switch(opcion)
             {
@@ -27,7 +27,7 @@ public class tech_shop
                     //BuscarProductoxCodigo();
                     break;
                 case 4:
-                    //ActualizarStock();
+                    ActualizarStock();
                     break;
                 case 5:
                     //OrdenarCatalogoxPrecio();
@@ -70,7 +70,7 @@ public class tech_shop
         Console.WriteLine("=============================================================");
     }
 
-    public static int LeerOpcion()
+    public static int LeerOpcionMenu()
     {
         int opcion;
         bool esValido = true;
@@ -89,6 +89,32 @@ public class tech_shop
             if(opcion < 0 || opcion > 9)
             {
                 Console.WriteLine("Error: Debe ingresar un numero entre 0 y 9");
+                esValido = false;
+            }
+        } while(!esValido);
+
+        return opcion;
+    }
+
+    public static int LeerOpcionActualizarStock()
+    {
+        int opcion;
+        bool esValido = true;
+
+        do
+        {
+            Console.WriteLine("Ingrese una opcion: ");
+
+            esValido = int.TryParse(Console.ReadLine(), out opcion);
+
+            if(!esValido)
+            {
+                Console.WriteLine("Error: Debe ingresar un numero entero");
+            }
+
+            if(opcion < 1 || opcion > 2)
+            {
+                Console.WriteLine("Error: Debe ingresar una opcion correcta (1 o 2)");
                 esValido = false;
             }
         } while(!esValido);
@@ -135,6 +161,18 @@ public class tech_shop
         if(_stock < 0)
         {
             Console.WriteLine("Debe ingresar un valor para el stock mayor o igual de 0.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool ValidarStock(int stock)
+    {
+        if(stock < 0)
+        {
+            Console.WriteLine("\nEl stock actualizado no puede ser menor de 0. Cantidad egresada supera la cantidad de stock actual.");
+            Console.WriteLine("Ingrese una cantidad menor. ");
             return false;
         }
 
@@ -195,4 +233,78 @@ public class tech_shop
             }
         }
     }
+
+    public static void ActualizarStock()
+    {
+        string codigo, mensaje = "";
+        int opcion, cant, resultado = 0;
+        bool valido = true;
+
+        do
+        {
+            Console.WriteLine("Ingrese el codigo para actualizar stock: ");
+            codigo = Console.ReadLine();
+            
+            for(int i = 0; i < 20; i++)
+            {
+                if (codigoArreglo[i] == codigo)
+                {
+                    Console.WriteLine("Codigo " + codigo + " encontrado");
+
+                    Console.WriteLine("\n=======================================================");
+                    Console.WriteLine("================== ACTUALIZAR STOCK ===================");
+                    Console.WriteLine("=======================================================");
+
+                    Console.WriteLine("\nDesea ingresar o egresar stock?");
+                    Console.WriteLine("1. Ingreso(+). ");
+                    Console.WriteLine("2. Egreso(-). ");
+                    Console.WriteLine("Seleccione una opcion: ");
+                    opcion = LeerOpcionActualizarStock();
+
+                    switch(opcion)
+                    {
+                        case 1:
+                            Console.WriteLine("Cantidad en stock actual: " + stockArreglo[i]);
+
+                            Console.WriteLine("\nQue cantidad desea ingresar?: ");
+                            cant = int.Parse(Console.ReadLine());
+                            
+                            resultado = stockArreglo[i] + cant;
+
+                            break;
+                        case 2:
+                            do
+                            {
+                                Console.WriteLine("Cantidad en stock actual: " + stockArreglo[i]);
+
+                                Console.WriteLine("\nQue cantidad desea egresar?: ");
+                                cant = int.Parse(Console.ReadLine());
+                                
+                                resultado = stockArreglo[i] - cant;
+
+                            } while(!ValidarStock(resultado));
+                            break;
+                    }
+
+                    stockArreglo[i] = resultado;
+                    Console.WriteLine("\nLa nueva cantidad actualizada de " + productosArreglo[i] + " es: " + stockArreglo[i]);
+
+                    mensaje = "Actualizacion exitosa. ";
+                    valido = true;
+
+                    break;
+                }
+                else
+                {
+                    mensaje = "Codigo no encontrado. Ingrese un codigo existente. ";
+                    valido = false;
+                }
+            }
+            
+            Console.WriteLine("\n" + mensaje);
+
+        } while (!valido);
+    }
+
+    
 }
