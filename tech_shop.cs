@@ -42,7 +42,7 @@ public class tech_shop
                     //OrdenarCatalogoAlfabeticamente();
                     break;
                 case 9:
-                    //ValorVsReferencia();
+                    ValorVsReferencia();
                     break;
                 case 0:
                     Console.WriteLine("Saliendo del programa... ");
@@ -258,7 +258,6 @@ public class tech_shop
                     Console.WriteLine("\nDesea ingresar o egresar stock?");
                     Console.WriteLine("1. Ingreso(+). ");
                     Console.WriteLine("2. Egreso(-). ");
-                    Console.WriteLine("Seleccione una opcion: ");
                     opcion = LeerOpcionActualizarStock();
 
                     switch(opcion)
@@ -304,6 +303,76 @@ public class tech_shop
             Console.WriteLine("\n" + mensaje);
 
         } while (!valido);
+    }
+
+    public static void ValorVsReferencia()
+    {
+        int opcion;
+
+        Console.WriteLine("1. Numero Simple. ");
+        Console.WriteLine("2. Arreglo de precios. ");
+        opcion = LeerOpcionActualizarStock();
+
+        switch(opcion)
+        {
+            case 1:
+                double numero = 10;
+                
+                Console.WriteLine("Numero original: " + numero);
+                ValorNum(numero);
+                Console.WriteLine("Numero actualizado por valor: " + numero);
+                
+                Console.WriteLine("=========================================");
+
+                Console.WriteLine("Numero original: " + numero);
+                ReferenciaNum(ref numero);
+                Console.WriteLine("Numero actualizado por referencia: " + numero);
+
+                break;
+            case 2:
+                int posicion;
+
+                Console.WriteLine("Ingrese una posicion: ");
+                posicion = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Valor original: " + preciosArreglo[posicion]);
+                ValorPrecio(preciosArreglo[posicion]);
+                Console.WriteLine("Valor actualizado por valor: " + preciosArreglo[posicion]);
+
+                Console.WriteLine("=========================================");
+
+                Console.WriteLine("Valor original: " + preciosArreglo[posicion]);
+                ReferenciaPrecio(ref preciosArreglo[posicion]);
+                Console.WriteLine("Valor actualizado por referencia: " + preciosArreglo[posicion]);
+
+                break;
+        }        
+    }
+
+    public static double ValorNum(double numero)
+    {
+        numero = numero + (numero * 0.5);
+        return numero;
+    }
+
+    public static double ReferenciaNum(ref double numero)
+    {
+        numero = numero + (numero * 0.5);
+        return numero;
+    }
+
+    public static double ValorPrecio(double precio)
+    {
+        precio = 150.00;
+
+        return precio;
+    }
+
+    public static double ReferenciaPrecio(ref double precio)
+    {
+        precio = 150.00;
+
+        return precio;
     }
 
     
