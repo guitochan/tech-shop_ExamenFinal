@@ -30,7 +30,7 @@ public class tech_shop
                     ActualizarStock();
                     break;
                 case 5:
-                    //OrdenarCatalogoxPrecio();
+                    OrdenarCatalogoxPrecio();
                     break;
                 case 6:
                     //InsertarProductoxPosicionEspecifica();
@@ -241,7 +241,7 @@ public class tech_shop
         
         do
         {
-            Console.WriteLine("Ingrese el codigo para actualizar stock: ");
+            Console.WriteLine("Ingrese el codigo para buscar producto: ");
             codigo = Console.ReadLine();
             
             for(int i = 0; i < 20; i++)
@@ -343,6 +343,49 @@ public class tech_shop
             Console.WriteLine("\n" + mensaje);
 
         } while (!valido);
+    }
+
+    public static void OrdenarCatalogoxPrecio()
+    {
+
+        Console.WriteLine("\n=======================================================");
+        Console.WriteLine("=============== ORDENAMIENTO POR PRECIO ===============");
+        Console.WriteLine("=======================================================");
+
+        if(capacidadMaxima != 0)
+        {
+            for(int i = 0; i < capacidadMaxima - 1; i++)
+            {
+                for(int j = 0; j < capacidadMaxima - 1 - i; j++)
+                {
+                    if(preciosArreglo[j] > preciosArreglo[j + 1])
+                    {
+                        double tempPrecios = preciosArreglo[j];
+                        preciosArreglo[j] = preciosArreglo[j + 1];
+                        preciosArreglo[j + 1] = tempPrecios;
+
+                        string tempCodigo = codigoArreglo[j];
+                        codigoArreglo[j] = codigoArreglo[j + 1];
+                        codigoArreglo[j + 1] = tempCodigo;
+
+                        string tempNombre = productosArreglo[j];
+                        productosArreglo[j] = productosArreglo[j + 1];
+                        productosArreglo[j + 1] = tempNombre;
+
+                        int tempStock = stockArreglo[j];
+                        stockArreglo[j] = stockArreglo[j + 1];
+                        stockArreglo[j + 1] = tempStock;
+                    }
+                }
+            }
+
+            MostrarCatalogo();
+        }
+        else
+        {
+            Console.WriteLine("Catalgo de Productos vacio. Primero regsitre un producto. ");
+        }
+        
     }
 
     public static void ValorVsReferencia()
