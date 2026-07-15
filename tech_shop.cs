@@ -24,7 +24,7 @@ public class tech_shop
                     MostrarCatalogo();
                     break;
                 case 3:
-                    //BuscarProductoxCodigo();
+                    BuscarProductoxCodigo();
                     break;
                 case 4:
                     ActualizarStock();
@@ -234,6 +234,46 @@ public class tech_shop
         }
     }
 
+    public static void BuscarProductoxCodigo()
+    {
+        string codigo, mensaje = "";
+        bool valido = true;
+        
+        do
+        {
+            Console.WriteLine("Ingrese el codigo para actualizar stock: ");
+            codigo = Console.ReadLine();
+            
+            for(int i = 0; i < 20; i++)
+            {
+                if (codigoArreglo[i] == codigo)
+                {
+                    Console.WriteLine("Codigo " + codigo + " encontrado");
+
+                    Console.WriteLine("\n                   PRODUCTO ENCONTRADO                    ");
+                    Console.WriteLine("-----------------------------------------------------------");
+                    Console.WriteLine("|   Codigo   |   Producto        |  Precio      |  Stock  |");
+                    Console.WriteLine("-----------------------------------------------------------");
+
+                    Console.WriteLine($"| {codigoArreglo[i], -10} | {productosArreglo[i], -17} | S/ {preciosArreglo[i], -8}  | {stockArreglo[i], -8}|");
+
+                    mensaje = "\nBusqueda exitosa. ";
+                    valido = true;
+
+                    break;
+                }
+                else
+                {
+                    mensaje = "\nCodigo no encontrado. Ingrese un codigo existente. ";
+                    valido = false;
+                }
+            }
+
+            Console.WriteLine("\n" + mensaje);
+
+        } while (!valido);
+    }
+
     public static void ActualizarStock()
     {
         string codigo, mensaje = "";
@@ -375,5 +415,5 @@ public class tech_shop
         return precio;
     }
 
-    
+
 }
