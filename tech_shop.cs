@@ -33,7 +33,7 @@ public class tech_shop
                     OrdenarCatalogoxPrecio();
                     break;
                 case 6:
-                    //InsertarProductoxPosicionEspecifica();
+                    InsertarProductoxPosicionEspecifica();
                     break;
                 case 7:
                     //EliminarProductoxCodigo();
@@ -386,6 +386,56 @@ public class tech_shop
             Console.WriteLine("Catalgo de Productos vacio. Primero regsitre un producto. ");
         }
         
+    }
+
+    public static void InsertarProductoxPosicionEspecifica()
+    {
+        int posicion, stock = 0;
+        string codigo = "", nombre = "";
+        double precio = 0.00;
+
+        Console.WriteLine("Ingrese en que posicion quiere insertar un nuevo producto: ");
+        posicion = int.Parse(Console.ReadLine());
+
+        capacidadMaxima++;
+        
+        for(int i = capacidadMaxima - 2; i >= posicion ; i--)
+        {
+            codigoArreglo[i + 1] = codigoArreglo[i];
+
+            productosArreglo[i + 1] = productosArreglo[i];
+
+            preciosArreglo[i + 1] = preciosArreglo[i];
+
+            stockArreglo[i + 1] = stockArreglo[i];
+        }
+
+        do
+        {
+            Console.WriteLine("\n=======================================================");
+            Console.WriteLine("      REGISTRO DE PRODUCTO EN POSICION ESPECIFICA      ");
+            Console.WriteLine("=======================================================");
+
+            Console.WriteLine("Ingrese el codigo del producto: ");
+            codigo = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el nombre del producto: ");
+            nombre = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el precio del producto: ");
+            precio = double.Parse(Console.ReadLine());
+            
+            Console.WriteLine("Ingrese el stock del producto: ");
+            stock = int.Parse(Console.ReadLine());
+            
+        } while(ProductoEsValido(codigo, nombre, precio, stock) == false);
+
+        codigoArreglo[posicion] = codigo;
+        productosArreglo[posicion] = nombre;
+        preciosArreglo[posicion] = precio;
+        stockArreglo[posicion] = stock;
+
+        MostrarCatalogo();
     }
 
     public static void ValorVsReferencia()
