@@ -39,7 +39,7 @@ public class tech_shop
                     EliminarProductoxCodigo();
                     break;
                 case 8:
-                    //OrdenarCatalogoAlfabeticamente();
+                    OrdenarCatalogoAlfabeticamente();
                     break;
                 case 9:
                     ValorVsReferencia();
@@ -482,6 +482,47 @@ public class tech_shop
             Console.WriteLine("\n" + mensaje);
 
         } while (!valido);
+    }
+
+    public static void OrdenarCatalogoAlfabeticamente()
+    {
+        Console.WriteLine("\n=======================================================");
+        Console.WriteLine("============ ORDENAMIENTO ALFABETICAMENTE =============");
+        Console.WriteLine("=======================================================");
+
+        if(capacidadMaxima != 0)
+        {
+            for(int i = 0; i < capacidadMaxima - 1; i++)
+            {
+                for(int j = 0; j < capacidadMaxima - 1 - i; j++)
+                {
+                    if(productosArreglo[j].CompareTo(productosArreglo[j + 1]) >= 0)
+                    {
+                        double tempPrecios = preciosArreglo[j];
+                        preciosArreglo[j] = preciosArreglo[j + 1];
+                        preciosArreglo[j + 1] = tempPrecios;
+
+                        string tempCodigo = codigoArreglo[j];
+                        codigoArreglo[j] = codigoArreglo[j + 1];
+                        codigoArreglo[j + 1] = tempCodigo;
+
+                        string tempNombre = productosArreglo[j];
+                        productosArreglo[j] = productosArreglo[j + 1];
+                        productosArreglo[j + 1] = tempNombre;
+
+                        int tempStock = stockArreglo[j];
+                        stockArreglo[j] = stockArreglo[j + 1];
+                        stockArreglo[j + 1] = tempStock;
+                    }
+                }
+            }
+
+            MostrarCatalogo();
+        }
+        else
+        {
+            Console.WriteLine("Catalgo de Productos vacio. Primero regsitre un producto. ");
+        }
     }
 
     public static void ValorVsReferencia()
