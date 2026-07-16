@@ -1,51 +1,59 @@
 public class tech_shop
 {
+    public static int capacidadMaxima = 0;
+
+    public static string[] codigoArreglo = new string [20];
+    public static string[] productosArreglo = new string [20];
+    public static double[] preciosArreglo = new double [20];
+    public static int[] stockArreglo = new int[20];
+
     public static void Main(String [] args)
     {
         int opcion;
-
-        MostrarMenu();
-        opcion=LeerOpcion();
-
-        switch(opcion)
+        while(true)
         {
-            case 1:
-                RegistrarProducto();
-                break;
-            case 2:
-                MostrarCatalogo();
-                break;
-            case 3:
-                BuscarProductoxCodigo();
-                break;
-            case 4:
-                ActualizarStock();
-                break;
-            case 5:
-                OrdenarCatalogoxPrecio();
-                break;
-            case 6:
-                InsertarProductoxPosicionEspecifica();
-                break;
-            case 7:
-                EliminarProductoxCodigo();
-                break;
-            case 8:
-                OrdenarCatalogoAlfabeticamente();
-                break;
-            case 9:
-                ValorVsReferencia();
-                break;
-            case 0:
-                Console.WriteLine("Saliendo del programa... ");
-                break;
-        }
+            MostrarMenu();
+            opcion=LeerOpcionMenu();
 
+            switch(opcion)
+            {
+                case 1:
+                    RegistrarProducto();
+                    break;
+                case 2:
+                    MostrarCatalogo();
+                    break;
+                case 3:
+                    BuscarProductoxCodigo();
+                    break;
+                case 4:
+                    ActualizarStock();
+                    break;
+                case 5:
+                    OrdenarCatalogoxPrecio();
+                    break;
+                case 6:
+                    InsertarProductoxPosicionEspecifica();
+                    break;
+                case 7:
+                    EliminarProductoxCodigo();
+                    break;
+                case 8:
+                    OrdenarCatalogoAlfabeticamente();
+                    break;
+                case 9:
+                    ValorVsReferencia();
+                    break;
+                case 0:
+                    Console.WriteLine("Saliendo del programa... ");
+                    return;
+            }
+        }
     }
 
     public static void MostrarMenu()
     {
-        Console.WriteLine("=============================================================");
+        Console.WriteLine("\n=============================================================");
         Console.WriteLine("======================== TECH - SHOP ========================");
         Console.WriteLine("=================== SISTEMA DE CATALOGOS ====================");
         Console.WriteLine("=============================================================");
@@ -62,7 +70,7 @@ public class tech_shop
         Console.WriteLine("=============================================================");
     }
 
-    public static int LeerOpcion()
+    public static int LeerOpcionMenu()
     {
         int opcion;
         bool esValido = true;
@@ -88,15 +96,504 @@ public class tech_shop
         return opcion;
     }
 
+    public static int LeerOpcionActualizarStock()
+    {
+        int opcion;
+        bool esValido = true;
+
+        do
+        {
+            Console.WriteLine("Ingrese una opcion: ");
+
+            esValido = int.TryParse(Console.ReadLine(), out opcion);
+
+            if(!esValido)
+            {
+                Console.WriteLine("Error: Debe ingresar un numero entero");
+            }
+
+            if(opcion < 1 || opcion > 2)
+            {
+                Console.WriteLine("Error: Debe ingresar una opcion correcta (1 o 2)");
+                esValido = false;
+            }
+        } while(!esValido);
+
+        return opcion;
+    }
+
+    public static bool ProductoEsValido(string _codigo, string _nombre, double _precio , int _stock)
+    {
+        if (_codigo == "")
+        {
+            Console.WriteLine("Codigo vacio. Ingresar un codigo.");
+            return false;
+        }
+        for(int i = 0; i < 20; i++)
+        {
+            if (codigoArreglo[i] == _codigo)
+            {
+                Console.WriteLine("Codigo repetido. Ingresar un codigo unico.");
+                return false;
+            }
+        }
+
+        if(_nombre == "")
+        {
+            Console.WriteLine("Nombre de producto vacio. Ingresar un nombre para el producto.");
+            return false;
+        }
+        for(int i = 0; i < 20; i++)
+        {
+            if (productosArreglo[i] == _nombre)
+            {
+                Console.WriteLine("Producto duplicado. Ingresar un producto distinto.");
+                return false;
+            }
+        }
+
+        if(_precio <= 0)
+        {
+            Console.WriteLine("Debe ingresar un valor para el precio mayor de 0.");
+            return false;
+        }
+
+        if(_stock < 0)
+        {
+            Console.WriteLine("Debe ingresar un valor para el stock mayor o igual de 0.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool ValidarStock(int stock)
+    {
+        if(stock < 0)
+        {
+            Console.WriteLine("\nEl stock actualizado no puede ser menor de 0. Cantidad egresada supera la cantidad de stock actual.");
+            Console.WriteLine("Ingrese una cantidad menor. ");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void RegistrarProducto()
+    {
+        string codigo = "", nombre = "";
+        double precio = 0.00;
+        int stock = 0;
+
+        if(capacidadMaxima >= 20)
+        {
+            Console.WriteLine("No se pueden registrar mas productos. Capacidad maxima alcanzada.");
+        }
+
+        do
+        {
+            Console.WriteLine("Ingrese el codigo del producto: ");
+            codigo = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el nombre del producto: ");
+            nombre = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el precio del producto: ");
+            precio = double.Parse(Console.ReadLine());
+            
+            Console.WriteLine("Ingrese el stock del producto: ");
+            stock = int.Parse(Console.ReadLine());
+            
+        } while(ProductoEsValido(codigo, nombre, precio, stock) == false);
+
+
+        codigoArreglo[capacidadMaxima] = codigo;
+        productosArreglo[capacidadMaxima] = nombre;
+        preciosArreglo[capacidadMaxima] = precio;
+        stockArreglo[capacidadMaxima] = stock;
+
+        capacidadMaxima++;
+    }
+    
     public static void MostrarCatalogo()
     {
-        Console.WriteLine("\nCatalogo de Productos");
-        Console.WriteLine("----------------------------------------------");
-        Console.WriteLine("|   Producto        |  Precio      |  Stock  |");
-        Console.WriteLine("----------------------------------------------");
+        Console.WriteLine("\n                   CATALOGO DE PRODUCTOS                  ");
+        Console.WriteLine("-----------------------------------------------------------");
+        Console.WriteLine("|   Codigo   |   Producto        |  Precio      |  Stock  |");
+        Console.WriteLine("-----------------------------------------------------------");
         
-        for(int i=0; i < productos.Length; i++){
-            Console.WriteLine($"| {productos[i], -17} | S/ {precios[i], -8}  | {stock[i], -8}|");
+        if(capacidadMaxima == 0)
+        {
+            Console.WriteLine("|-------------- NO HAY PRODUCTOS REGISTRADOS -------------|");
+        }
+        else
+        {
+            for(int i=0; i < capacidadMaxima; i++){
+                Console.WriteLine($"| {codigoArreglo[i], -10} | {productosArreglo[i], -17} | S/ {preciosArreglo[i], -8}  | {stockArreglo[i], -8}|");
+            }
         }
     }
+
+    public static void BuscarProductoxCodigo()
+    {
+        string codigo, mensaje = "";
+        bool valido = true;
+        
+        do
+        {
+            Console.WriteLine("Ingrese el codigo para buscar producto: ");
+            codigo = Console.ReadLine();
+            
+            for(int i = 0; i < capacidadMaxima; i++)
+            {
+                if (codigoArreglo[i] == codigo)
+                {
+                    Console.WriteLine("Codigo " + codigo + " encontrado");
+
+                    Console.WriteLine("\n                   PRODUCTO ENCONTRADO                    ");
+                    Console.WriteLine("-----------------------------------------------------------");
+                    Console.WriteLine("|   Codigo   |   Producto        |  Precio      |  Stock  |");
+                    Console.WriteLine("-----------------------------------------------------------");
+
+                    Console.WriteLine($"| {codigoArreglo[i], -10} | {productosArreglo[i], -17} | S/ {preciosArreglo[i], -8}  | {stockArreglo[i], -8}|");
+
+                    mensaje = "\nBusqueda exitosa. ";
+                    valido = true;
+
+                    break;
+                }
+                else
+                {
+                    mensaje = "\nCodigo no encontrado. Ingrese un codigo existente. ";
+                    valido = false;
+                }
+            }
+
+            Console.WriteLine("\n" + mensaje);
+
+        } while (!valido);
+    }
+
+    public static void ActualizarStock()
+    {
+        string codigo, mensaje = "";
+        int opcion, cant, resultado = 0;
+        bool valido = true;
+
+        do
+        {
+            Console.WriteLine("Ingrese el codigo para actualizar stock: ");
+            codigo = Console.ReadLine();
+            
+            for(int i = 0; i < 20; i++)
+            {
+                if (codigoArreglo[i] == codigo)
+                {
+                    Console.WriteLine("Codigo " + codigo + " encontrado");
+
+                    Console.WriteLine("\n=======================================================");
+                    Console.WriteLine("================== ACTUALIZAR STOCK ===================");
+                    Console.WriteLine("=======================================================");
+
+                    Console.WriteLine("\nDesea ingresar o egresar stock?");
+                    Console.WriteLine("1. Ingreso(+). ");
+                    Console.WriteLine("2. Egreso(-). ");
+                    opcion = LeerOpcionActualizarStock();
+
+                    switch(opcion)
+                    {
+                        case 1:
+                            Console.WriteLine("Cantidad en stock actual: " + stockArreglo[i]);
+
+                            Console.WriteLine("\nQue cantidad desea ingresar?: ");
+                            cant = int.Parse(Console.ReadLine());
+                            
+                            resultado = stockArreglo[i] + cant;
+
+                            break;
+                        case 2:
+                            do
+                            {
+                                Console.WriteLine("Cantidad en stock actual: " + stockArreglo[i]);
+
+                                Console.WriteLine("\nQue cantidad desea egresar?: ");
+                                cant = int.Parse(Console.ReadLine());
+                                
+                                resultado = stockArreglo[i] - cant;
+
+                            } while(!ValidarStock(resultado));
+                            break;
+                    }
+
+                    stockArreglo[i] = resultado;
+                    Console.WriteLine("\nLa nueva cantidad actualizada de " + productosArreglo[i] + " es: " + stockArreglo[i]);
+
+                    mensaje = "Actualizacion exitosa. ";
+                    valido = true;
+
+                    break;
+                }
+                else
+                {
+                    mensaje = "Codigo no encontrado. Ingrese un codigo existente. ";
+                    valido = false;
+                }
+            }
+            
+            Console.WriteLine("\n" + mensaje);
+
+        } while (!valido);
+    }
+
+    public static void OrdenarCatalogoxPrecio()
+    {
+
+        Console.WriteLine("\n=======================================================");
+        Console.WriteLine("=============== ORDENAMIENTO POR PRECIO ===============");
+        Console.WriteLine("=======================================================");
+
+        if(capacidadMaxima != 0)
+        {
+            for(int i = 0; i < capacidadMaxima - 1; i++)
+            {
+                for(int j = 0; j < capacidadMaxima - 1 - i; j++)
+                {
+                    if(preciosArreglo[j] > preciosArreglo[j + 1])
+                    {
+                        double tempPrecios = preciosArreglo[j];
+                        preciosArreglo[j] = preciosArreglo[j + 1];
+                        preciosArreglo[j + 1] = tempPrecios;
+
+                        string tempCodigo = codigoArreglo[j];
+                        codigoArreglo[j] = codigoArreglo[j + 1];
+                        codigoArreglo[j + 1] = tempCodigo;
+
+                        string tempNombre = productosArreglo[j];
+                        productosArreglo[j] = productosArreglo[j + 1];
+                        productosArreglo[j + 1] = tempNombre;
+
+                        int tempStock = stockArreglo[j];
+                        stockArreglo[j] = stockArreglo[j + 1];
+                        stockArreglo[j + 1] = tempStock;
+                    }
+                }
+            }
+
+            MostrarCatalogo();
+        }
+        else
+        {
+            Console.WriteLine("Catalgo de Productos vacio. Primero regsitre un producto. ");
+        }
+        
+    }
+
+    public static void InsertarProductoxPosicionEspecifica()
+    {
+        int posicion, stock = 0;
+        string codigo = "", nombre = "";
+        double precio = 0.00;
+
+        Console.WriteLine("Ingrese en que posicion quiere insertar un nuevo producto: ");
+        posicion = int.Parse(Console.ReadLine());
+
+        capacidadMaxima++;
+
+        for(int i = capacidadMaxima - 2; i >= posicion ; i--)
+        {
+            codigoArreglo[i + 1] = codigoArreglo[i];
+
+            productosArreglo[i + 1] = productosArreglo[i];
+
+            preciosArreglo[i + 1] = preciosArreglo[i];
+
+            stockArreglo[i + 1] = stockArreglo[i];
+        }
+
+        do
+        {
+            Console.WriteLine("\n=======================================================");
+            Console.WriteLine("      REGISTRO DE PRODUCTO EN POSICION ESPECIFICA      ");
+            Console.WriteLine("=======================================================");
+
+            Console.WriteLine("Ingrese el codigo del producto: ");
+            codigo = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el nombre del producto: ");
+            nombre = Console.ReadLine();
+            
+            Console.WriteLine("Ingrese el precio del producto: ");
+            precio = double.Parse(Console.ReadLine());
+            
+            Console.WriteLine("Ingrese el stock del producto: ");
+            stock = int.Parse(Console.ReadLine());
+            
+        } while(ProductoEsValido(codigo, nombre, precio, stock) == false);
+
+        codigoArreglo[posicion] = codigo;
+        productosArreglo[posicion] = nombre;
+        preciosArreglo[posicion] = precio;
+        stockArreglo[posicion] = stock;
+
+        MostrarCatalogo();
+    }
+
+    public static void EliminarProductoxCodigo()
+    {
+        string codigo, mensaje = "";
+        bool valido = true;
+        
+        do
+        {
+            Console.WriteLine("Ingrese el codigo para buscar producto: ");
+            codigo = Console.ReadLine();
+            
+            for(int i = 0; i < capacidadMaxima; i++)
+            {
+                if (codigoArreglo[i] == codigo)
+                {
+                    for(int j = i; j < capacidadMaxima ; j++)
+                    {
+                        codigoArreglo[j] = codigoArreglo[j + 1];
+
+                        productosArreglo[j] = productosArreglo[j + 1];
+
+                        preciosArreglo[j] = preciosArreglo[j + 1];
+
+                        stockArreglo[j] = stockArreglo[j + 1];
+                    }
+                    
+                    capacidadMaxima--;
+
+                    MostrarCatalogo();
+
+                    mensaje = "\nBusqueda exitosa. ";
+                    valido = true;
+
+                    break;
+                }
+                else
+                {
+                    mensaje = "\nCodigo no encontrado. Ingrese un codigo existente. ";
+                    valido = false;
+                }
+            }
+
+            Console.WriteLine("\n" + mensaje);
+
+        } while (!valido);
+    }
+
+    public static void OrdenarCatalogoAlfabeticamente()
+    {
+        Console.WriteLine("\n=======================================================");
+        Console.WriteLine("============ ORDENAMIENTO ALFABETICAMENTE =============");
+        Console.WriteLine("=======================================================");
+
+        if(capacidadMaxima != 0)
+        {
+            for(int i = 0; i < capacidadMaxima - 1; i++)
+            {
+                for(int j = 0; j < capacidadMaxima - 1 - i; j++)
+                {
+                    if(productosArreglo[j].CompareTo(productosArreglo[j + 1]) >= 0)
+                    {
+                        double tempPrecios = preciosArreglo[j];
+                        preciosArreglo[j] = preciosArreglo[j + 1];
+                        preciosArreglo[j + 1] = tempPrecios;
+
+                        string tempCodigo = codigoArreglo[j];
+                        codigoArreglo[j] = codigoArreglo[j + 1];
+                        codigoArreglo[j + 1] = tempCodigo;
+
+                        string tempNombre = productosArreglo[j];
+                        productosArreglo[j] = productosArreglo[j + 1];
+                        productosArreglo[j + 1] = tempNombre;
+
+                        int tempStock = stockArreglo[j];
+                        stockArreglo[j] = stockArreglo[j + 1];
+                        stockArreglo[j + 1] = tempStock;
+                    }
+                }
+            }
+
+            MostrarCatalogo();
+        }
+        else
+        {
+            Console.WriteLine("Catalgo de Productos vacio. Primero regsitre un producto. ");
+        }
+    }
+
+    public static void ValorVsReferencia()
+    {
+        int opcion;
+
+        Console.WriteLine("1. Numero Simple. ");
+        Console.WriteLine("2. Arreglo de precios. ");
+        opcion = LeerOpcionActualizarStock();
+
+        switch(opcion)
+        {
+            case 1:
+                double numero = 10;
+                
+                Console.WriteLine("Numero original: " + numero);
+                ValorNum(numero);
+                Console.WriteLine("Numero actualizado por valor: " + numero);
+                
+                Console.WriteLine("=========================================");
+
+                Console.WriteLine("Numero original: " + numero);
+                ReferenciaNum(ref numero);
+                Console.WriteLine("Numero actualizado por referencia: " + numero);
+
+                break;
+            case 2:
+                int posicion;
+
+                Console.WriteLine("Ingrese una posicion: ");
+                posicion = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Valor original: " + preciosArreglo[posicion]);
+                ValorPrecio(preciosArreglo[posicion]);
+                Console.WriteLine("Valor actualizado por valor: " + preciosArreglo[posicion]);
+
+                Console.WriteLine("=========================================");
+
+                Console.WriteLine("Valor original: " + preciosArreglo[posicion]);
+                ReferenciaPrecio(ref preciosArreglo[posicion]);
+                Console.WriteLine("Valor actualizado por referencia: " + preciosArreglo[posicion]);
+
+                break;
+        }        
+    }
+
+    public static double ValorNum(double numero)
+    {
+        numero = numero + (numero * 0.5);
+        return numero;
+    }
+
+    public static double ReferenciaNum(ref double numero)
+    {
+        numero = numero + (numero * 0.5);
+        return numero;
+    }
+
+    public static double ValorPrecio(double precio)
+    {
+        precio = 150.00;
+
+        return precio;
+    }
+
+    public static double ReferenciaPrecio(ref double precio)
+    {
+        precio = 150.00;
+
+        return precio;
+    }
+
+
 }
