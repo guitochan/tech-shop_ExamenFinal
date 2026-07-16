@@ -36,7 +36,7 @@ public class tech_shop
                     InsertarProductoxPosicionEspecifica();
                     break;
                 case 7:
-                    //EliminarProductoxCodigo();
+                    EliminarProductoxCodigo();
                     break;
                 case 8:
                     //OrdenarCatalogoAlfabeticamente();
@@ -244,7 +244,7 @@ public class tech_shop
             Console.WriteLine("Ingrese el codigo para buscar producto: ");
             codigo = Console.ReadLine();
             
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < capacidadMaxima; i++)
             {
                 if (codigoArreglo[i] == codigo)
                 {
@@ -398,7 +398,7 @@ public class tech_shop
         posicion = int.Parse(Console.ReadLine());
 
         capacidadMaxima++;
-        
+
         for(int i = capacidadMaxima - 2; i >= posicion ; i--)
         {
             codigoArreglo[i + 1] = codigoArreglo[i];
@@ -436,6 +436,52 @@ public class tech_shop
         stockArreglo[posicion] = stock;
 
         MostrarCatalogo();
+    }
+
+    public static void EliminarProductoxCodigo()
+    {
+        string codigo, mensaje = "";
+        bool valido = true;
+        
+        do
+        {
+            Console.WriteLine("Ingrese el codigo para buscar producto: ");
+            codigo = Console.ReadLine();
+            
+            for(int i = 0; i < capacidadMaxima; i++)
+            {
+                if (codigoArreglo[i] == codigo)
+                {
+                    for(int j = i; j < capacidadMaxima ; j++)
+                    {
+                        codigoArreglo[j] = codigoArreglo[j + 1];
+
+                        productosArreglo[j] = productosArreglo[j + 1];
+
+                        preciosArreglo[j] = preciosArreglo[j + 1];
+
+                        stockArreglo[j] = stockArreglo[j + 1];
+                    }
+                    
+                    capacidadMaxima--;
+
+                    MostrarCatalogo();
+
+                    mensaje = "\nBusqueda exitosa. ";
+                    valido = true;
+
+                    break;
+                }
+                else
+                {
+                    mensaje = "\nCodigo no encontrado. Ingrese un codigo existente. ";
+                    valido = false;
+                }
+            }
+
+            Console.WriteLine("\n" + mensaje);
+
+        } while (!valido);
     }
 
     public static void ValorVsReferencia()
